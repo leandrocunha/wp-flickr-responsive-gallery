@@ -1,12 +1,12 @@
 <?php
 /**
  * Plugin Name: Flickr Responsive Gallery
- * Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
+ * Plugin URI: https://github.com/leandrocunha/wp-flickr-responsive-gallery
  * Description: A brief description of the Plugin.
  * Version: 1.0
  * Author: Leandro Cunha aka. Frango
- * Author URI: http://URI_Of_The_Plugin_Author
- * License: A "Slug" license name e.g. GPL2
+ * Author URI: http://frango.herokuapp.com/
+ * License: MIT
  */
 
 	defined('ABSPATH') or die("No script kiddies please!");
@@ -46,15 +46,8 @@
 		// show form
 		echo '<div class="wrap">';
 		echo '<h2>Flickr Responsive Gallery</h2>';
-		echo '<form method="post" action="admin.php?page=flickr-responsive-gallery">';
-		settings_fields( 'myoption-group' );
-		do_settings_sections( 'myoption-group' );
-		echo '<input name="name" type="text" value="' . esc_attr( get_option('name') ) . '" />';
-		echo '<input name="gallery_id" type="text" value="' . esc_attr( get_option('gallery_id') ) . '" />';
-		echo '<input type="hidden" name="frg_form_submit" value="submit" />';
-		submit_button();
-		echo '</form>';
-
+		echo '<div class="frg-content">';
+		echo '<div class="frg-col-left">';
 		global $wpdb;
 		$db_name = $wpdb->prefix . "frg_fields";
 		$retrieve_data = $wpdb->get_results("SELECT * FROM $db_name");
@@ -64,6 +57,23 @@
 			echo '<li>' . $retrieved_data->name . ' | [flickr-responsive-gallery id="' . $retrieved_data->gallery_id . '"]</li>';
 		}
 		echo '</ul>';
+		echo '</div>';
+		echo '<div class="frg-col-right">';
+		echo '<div class="wp-box">';
+		echo '<form method="post" action="admin.php?page=flickr-responsive-gallery">';
+		settings_fields( 'myoption-group' );
+		do_settings_sections( 'myoption-group' );
+		echo '<label for="name">Nome da galeria</label>';
+		echo '<input name="name" type="text" />';
+		echo '<label for="gallery_id">ID da galeria</label>';
+		echo '<input name="gallery_id" type="text" />';
+		echo '<input type="hidden" name="frg_form_submit" value="submit" />';
+		submit_button();
+		echo '</form>';
+		echo '<div class="footer footer-blue"><ul class="hl"><li>Criado por Leandro Cunha aka. Frango</li></ul></div>';
+		echo '</div>';
+		echo '</div>';
+		echo '</div>';
 		echo '</div>';
 	}
 
@@ -97,12 +107,31 @@
 
 
 	function frg_scripts() {
-		wp_enqueue_script( 'script-name', plugins_url( 'flickr-responsive-gallery/script.js', dirname(__FILE__) ) );
+		wp_enqueue_style( 'frg-global', plugins_url('frg-global.css', __FILE__) );
+		wp_enqueue_script( 'frg-script', plugins_url( 'script.js', __FILE__ ) );
 	}
 
 	add_action( 'wp_enqueue_scripts', 'frg_scripts' );
 
-	/** 3) REGISTER ACTIVATION HOOK **/
+
+	function my_enqueue($hook) {
+	   wp_enqueue_style( 'frg-global', plugins_url('frg-global.css', __FILE__) );
+	}
+	add_action( 'admin_enqueue_scripts', 'my_enqueue' );
+
+
+	/** 3) UNINSTALL PLUGIN **/
+	function frg_uninstall() {
+		global $wpdb;
+
+		$wpdb->query("DROP TABLE IF EXISTS " . $wpdb->prefix . "frg_fields" );
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
+	}
+
+	/** 4) REGISTER ACTIVATION/DEACTIVATION HOOK **/
 	register_activation_hook( __FILE__, 'frg_db_create' );
+	register_deactivation_hook( __FILE__, 'frg_uninstall' );
 
 ?>
