@@ -11,6 +11,7 @@
 
 	defined('ABSPATH') or die("No script kiddies please!");
 
+	require 'table.php';
 
 
 	/** 1) SETUP DATABASE BUILDER **/
@@ -57,6 +58,10 @@
 			echo '<li>' . $retrieved_data->name . ' | [flickr-responsive-gallery id="' . $retrieved_data->gallery_id . '"]</li>';
 		}
 		echo '</ul>';
+		// Display table
+		$frg_wp_list_table = new FRG_WP_List_Table();
+		$frg_wp_list_table->prepare_items();
+		$frg_wp_list_table->display();
 		echo '</div>';
 		echo '<div class="frg-col-right">';
 		echo '<div class="wp-box">';
