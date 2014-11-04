@@ -20,11 +20,12 @@
 
 		$wpdb->query("DROP TABLE IF EXISTS " . $wpdb->prefix . "frg_fields" );
 		$sql = "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "frg_fields` (
-			id int NOT NULL AUTO_INCREMENT,
-			name CHAR(100) NOT NULL,
-			gallery_id CHAR(100) NOT NULL,
-			UNIQUE KEY id (id)
-		);";
+					id int NOT NULL AUTO_INCREMENT,
+					name CHAR(100) NOT NULL,
+					gallery_id CHAR(100) NOT NULL,
+					shortcode VARCHAR(255) NOT NULL,
+					UNIQUE KEY id (id)
+				);";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
@@ -49,15 +50,15 @@
 		echo '<h2>Flickr Responsive Gallery</h2>';
 		echo '<div class="frg-content">';
 		echo '<div class="frg-col-left">';
-		global $wpdb;
-		$db_name = $wpdb->prefix . "frg_fields";
-		$retrieve_data = $wpdb->get_results("SELECT * FROM $db_name");
+		// global $wpdb;
+		// $db_name = $wpdb->prefix . "frg_fields";
+		// $retrieve_data = $wpdb->get_results("SELECT * FROM $db_name");
 
-		echo '<ul>';
-		foreach ($retrieve_data as $retrieved_data){
-			echo '<li>' . $retrieved_data->name . ' | [flickr-responsive-gallery id="' . $retrieved_data->gallery_id . '"]</li>';
-		}
-		echo '</ul>';
+		// echo '<ul>';
+		// foreach ($retrieve_data as $retrieved_data){
+		// 	echo '<li>' . $retrieved_data->name . ' | [flickr-responsive-gallery id="' . $retrieved_data->gallery_id . '"]</li>';
+		// }
+		// echo '</ul>';
 		// Display table
 		$frg_wp_list_table = new FRG_WP_List_Table();
 		$frg_wp_list_table->prepare_items();
@@ -94,8 +95,9 @@
 		   ), $atts));
 
 		$tpl = '<div class="frg-wrapper" id="flickr-responsive-gallery">';
-		$tpl .= '<p>Galeria de imagens do Flickr</p>';
 		$tpl .= '<div class="frg-gallery" data-gid="' . $id . '"></div>';
+		$tpl .= '<ul class="frg-gallery-list owl-carousel" id="owl-carousel-gallery"></ul>';
+		$tpl .= '<ul class="frg-gallery-thumb-nav" id="owl-carousel-gallery-thumb"></ul>';
 		$tpl .= '</div>';
 
 	  return $tpl;
@@ -107,13 +109,20 @@
 	if ( isset( $_POST['frg_form_submit'] ) ){
 		add_option( 'name', $_POST['name']);
 		add_option( 'gallery_id', $_POST['gallery_id']);
-		$wpdb->insert(  $wpdb->prefix . "frg_fields", array( 'name' => $_POST['name'], 'gallery_id' => $_POST['gallery_id'] ) );
+		$wpdb->insert(  $wpdb->prefix . "frg_fields", array( 'name' 		=> $_POST['name'],
+															 'gallery_id' 	=> $_POST['gallery_id'],
+															 'shortcode'	=> '[flickr-responsive-gallery id="' . $_POST["gallery_id"] . '"]'
+															 ));
 	}
 
 
 	function frg_scripts() {
 		wp_enqueue_style( 'frg-global', plugins_url('frg-global.css', __FILE__) );
-		wp_enqueue_script( 'frg-script', plugins_url( 'script.js', __FILE__ ) );
+		wp_enqueue_style( 'frg-theme-default', plugins_url('theme-default.css', __FILE__) );
+		wp_enqueue_style( 'owl-carousel', plugins_url('owl.carousel/owl-carousel/owl.carousel.css', __FILE__) );
+
+		wp_enqueue_script( 'owl-carousel', plugins_url( 'owl.carousel/owl-carousel/owl.carousel.min.js', __FILE__ ), array('jquery') );
+		wp_enqueue_script( 'frg-scripts', plugins_url( 'script.js', __FILE__ ), array('owl-carousel') );
 	}
 
 	add_action( 'wp_enqueue_scripts', 'frg_scripts' );
