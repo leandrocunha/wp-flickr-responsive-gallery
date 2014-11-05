@@ -1,5 +1,6 @@
 jQuery(document).ready(function($){
 	var api_key	= '22f8544cfa560f0c1663b5653537f96f',
+		set_id = $('.frg-gallery').data('gid'),
 		gallery_wrapper = $('#flickr-responsive-gallery'),
 		gallery = gallery_wrapper.find('.frg-gallery-list'),
 		gallery_thumb = gallery_wrapper.find('.frg-gallery-thumb-nav'),
@@ -7,7 +8,7 @@ jQuery(document).ready(function($){
 		total_pages = 0,
 		thumb_links = undefined;
 
-	$.post('https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=' + api_key + '&photoset_id=72157648206385098&format=json&nojsoncallback=1', function( data ) {
+	$.post('https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=' + api_key + '&photoset_id=' + set_id + '&format=json&nojsoncallback=1', function( data ) {
 
 		var photos = data.photoset.photo;
 
