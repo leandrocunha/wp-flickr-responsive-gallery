@@ -98,6 +98,7 @@
 		$tpl .= '<div class="frg-gallery" data-gid="' . $id . '"></div>';
 		$tpl .= '<ul class="frg-gallery-list owl-carousel" id="owl-carousel-gallery"></ul>';
 		$tpl .= '<ul class="frg-gallery-thumb-nav" id="owl-carousel-gallery-thumb"></ul>';
+		$tpl .= '<div class="pagination-wrapper"><p><span class="current">1</span>/<span class="total">0</span></p></div>';
 		$tpl .= '</div>';
 
 	  return $tpl;
