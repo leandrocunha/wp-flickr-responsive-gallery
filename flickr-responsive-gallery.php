@@ -36,7 +36,7 @@
 	add_action( 'admin_menu', 'frg_menu' );
 
 	function frg_menu() {
-		add_menu_page( 'Flickr Responsive Gallery', 'Flickr Responsive Gallery', 'manage_options', 'flickr-responsive-gallery', 'frg_options', false, 58 );
+		add_menu_page( 'Flickr Responsive Gallery', 'Flickr Responsive Gallery', 'manage_options', 'flickr-responsive-gallery', 'frg_options', 'dashicons-format-gallery', 58 );
 		add_action( 'admin_init', 'register_mysettings' );
 	}
 
