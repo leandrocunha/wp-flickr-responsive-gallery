@@ -47,9 +47,9 @@
 
 		// show form
 		echo '<div class="wrap">';
+			echo '<h2>Flickr Responsive Gallery</h2>';
 			echo '<div id="poststuff">';
 				echo '<div class="metabox-holder columns-2">';
-					echo '<h2>Flickr Responsive Gallery</h2>';
 					echo '<div class="frg-content">';
 						echo '<div class="frg-col-left">';
 						$frg_wp_list_table = new FRG_WP_List_Table();
