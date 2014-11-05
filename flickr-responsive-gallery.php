@@ -47,39 +47,50 @@
 
 		// show form
 		echo '<div class="wrap">';
-		echo '<h2>Flickr Responsive Gallery</h2>';
-		echo '<div class="frg-content">';
-		echo '<div class="frg-col-left">';
-		// global $wpdb;
-		// $db_name = $wpdb->prefix . "frg_fields";
-		// $retrieve_data = $wpdb->get_results("SELECT * FROM $db_name");
+			echo '<div id="poststuff">';
+				echo '<div class="metabox-holder columns-2">';
+					echo '<h2>Flickr Responsive Gallery</h2>';
+					echo '<div class="frg-content">';
+						echo '<div class="frg-col-left">';
+						$frg_wp_list_table = new FRG_WP_List_Table();
+						$frg_wp_list_table->prepare_items();
+						$frg_wp_list_table->display();
+						echo '</div>';
 
-		// echo '<ul>';
-		// foreach ($retrieve_data as $retrieved_data){
-		// 	echo '<li>' . $retrieved_data->name . ' | [flickr-responsive-gallery id="' . $retrieved_data->gallery_id . '"]</li>';
-		// }
-		// echo '</ul>';
-		// Display table
-		$frg_wp_list_table = new FRG_WP_List_Table();
-		$frg_wp_list_table->prepare_items();
-		$frg_wp_list_table->display();
-		echo '</div>';
-		echo '<div class="frg-col-right">';
-		echo '<div class="wp-box">';
-		echo '<form method="post" action="admin.php?page=flickr-responsive-gallery">';
-		settings_fields( 'myoption-group' );
-		do_settings_sections( 'myoption-group' );
-		echo '<label for="name">Nome da galeria</label>';
-		echo '<input name="name" type="text" />';
-		echo '<label for="gallery_id">ID da galeria</label>';
-		echo '<input name="gallery_id" type="text" />';
-		echo '<input type="hidden" name="frg_form_submit" value="submit" />';
-		submit_button();
-		echo '</form>';
-		echo '<div class="footer footer-blue"><ul class="hl"><li>Criado por Leandro Cunha aka. Frango</li></ul></div>';
-		echo '</div>';
-		echo '</div>';
-		echo '</div>';
+						echo '<div class="frg-col-right">';
+							echo '<div class="meta-box-sortables ui-sortable">';
+								echo '<div id="submitdiv" class="postbox ">';
+									echo '<div class="handlediv" title="Clique para expandir ou recolher."><br></div>';
+									echo '<h3 class="hndle ui-sortable-handle"><span>Nova galeria</span></h3>';
+									echo '<div class="inside">';
+										echo '<div class="submitbox" id="submitpost">';
+											echo '<form class="form-gallery" method="post" action="admin.php?page=flickr-responsive-gallery">';
+												echo '<div id="minor-publishing">';
+
+													settings_fields( 'myoption-group' );
+													do_settings_sections( 'myoption-group' );
+													echo '<label for="name">Nome da galeria</label><br />';
+													echo '<input name="name" type="text" /><br /><br />';
+													echo '<label for="gallery_id">ID da galeria</label><br />';
+													echo '<input name="gallery_id" type="text" />';
+													echo '<input type="hidden" name="frg_form_submit" value="submit" />';												
+												echo '</div>';
+
+												echo '<div id="major-publishing-actions">';
+													echo '<div id="publishing-action">';
+														submit_button('Salvar galeria', 'primary', 'submit', false);
+													echo '</div>';
+													echo '<div class="clear"></div>';		
+												echo '</div>';												
+											echo '</form>';	
+										echo '</div>';
+									echo '</div>';
+								echo '</div>';
+							echo '</div>';
+						echo '</div>';
+					echo '</div>';
+				echo '</div>';
+			echo '</div>';
 		echo '</div>';
 	}
 
